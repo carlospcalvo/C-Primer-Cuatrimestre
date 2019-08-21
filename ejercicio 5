@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int contador = 0;
+    int acumulador = 0;
+    int num ;
+
+
+    while(contador < 5)
+    {
+        printf("ingrese un numero ");
+
+        scanf("%d", &num);
+
+        acumulador = acumulador + num ;
+
+        contador ++;
+    }
+
+    int promedio = acumulador / contador;
+
+    printf(" el total es %d y el promedio es %d ", acumulador, promedio);
+
+    return 0;
+
+}
