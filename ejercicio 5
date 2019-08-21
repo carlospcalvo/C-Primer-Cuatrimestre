@@ -6,7 +6,7 @@ int main()
     int contador = 0;
     int acumulador = 0;
     int num ;
-
+    float promedio;
 
     while(contador < 5)
     {
@@ -19,7 +19,7 @@ int main()
         contador ++;
     }
 
-    int promedio = acumulador / contador;
+    promedio = (float) acumulador / contador;  /*se castea porque la maquina piensa que tiene que devolver un int*/
 
     printf(" el total es %d y el promedio es %d ", acumulador, promedio);
 
