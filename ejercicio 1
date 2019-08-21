@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int numero = 2019;
+    int dia = 21;
+    char letra = 'A';
+    char nombre[20] = "Juan";
+    float precio = 123.75;
+
+    printf("Esto funciona de maravilla\n");
+    printf("Estamos en el anio %d y el dia de hoy es %d\n", numero, dia);
+    printf("Su nombre es %s\n", nombre);
+    printf("El precio es %f\n", precio);
+    printf("El precio es %.2f\n", precio);
+    return 0;
+
+}
