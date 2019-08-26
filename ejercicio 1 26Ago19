@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+/*Pedir nombre, sexo y nota mientras el usuario quiera.
+Informar: ç
+1-Nombre y sexo de la mayor nota y la menor
+2-Promedio de las notas totales
+3-Promedio de las notas de mujeres */
+
+int main()
+{
+    char nombre[20];
+    char nombreMax[20];
+    char nombreMin[20];
+    char sexo;
+    char sexoMax;
+    char sexoMin;
+    char seguir;
+    int nota;
+    int notaMax;
+    int notaMin;
+    int acumulador = 0;
+    int acumuladorMujeres = 0;
+    int contador = 0;
+    int contMujeres = 0;
+    int flag = 0;
+    float promedio;
+    float promedioMujeres;
+
+    do
+    {
+        printf("Ingrese el nombre: ");
+        __fpurge(stdin); //linux no usa fflush
+        scanf("%s", &nombre);
+
+        printf("Ingrese el sexo (f/m): ");
+        __fpurge(stdin);
+        scanf("%c", &sexo);
+
+        while(!(sexo == 'f' || sexo == 'm'))
+        {
+            printf("Error. Reingrese el sexo (f/m): ");
+            __fpurge(stdin);
+            scanf("%c", &sexo);
+        }
+
+        printf("Ingrese la nota: ");
+        __fpurge(stdin);
+        scanf("%d", &nota);
+
+        while(!(nota > 0 && nota < 11))
+        {
+            printf("Error. Reingrese la nota (1-10): ");
+            __fpurge(stdin);
+            scanf("%d", &nota);
+        }
+
+        contador++;
+        acumulador = acumulador + nota;
+
+        if(sexo == 'f')
+        {
+            acumuladorMujeres = acumuladorMujeres + nota;
+            contMujeres++;
+        }
+
+        if(nota < notaMin || flag == 0)
+        {
+            strcpy(nombreMin,nombre); //strcpy se usa para copiar strings
+            sexoMin = sexo;
+            notaMin = nota;
+            flag = 1;
+        }
+
+        if(nota > notaMax || flag == 0)
+        {
+            strcpy(nombreMax,nombre);
+            sexoMax = sexo;
+            notaMax = nota;
+            flag = 1;
+        }
+
+        printf("/n Desea continuar?(y/n): ");
+        __fpurge(stdin);
+        scanf("%c", &seguir);
+        //seguir = getch(); // toma directamente el caracter, sin apretar enter
+        //seguir = getche(); //idem getch y muestra el caracter
+    }while(seguir == 'y');
+
+    promedio = (float) acumulador/contador;
+
+    if (contMujeres != 0)
+    {
+        promedioMujeres = (float) acumuladorMujeres/contMujeres;
+    }
+
+    printf("\n Nota minima: Nombre: %s Sexo: %c Nota: %d", nombreMin, sexoMin, notaMin);
+    printf("\n Nota maxima: Nombre: %s Sexo: %c Nota: %d", nombreMax, sexoMax, notaMax);
+    printf("\n promedio= %f", promedio);
+    printf("\n promedio mujeres= %f", promedioMujeres);
+
+    return 0;
+}
