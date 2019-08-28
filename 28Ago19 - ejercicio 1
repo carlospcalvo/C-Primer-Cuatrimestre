@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+float calcularSupCirculo(float);
+
+int main()
+{
+    float radio;
+    float superficie;
+
+    printf("Ingrese el radio: ");
+    fflush(stdin);
+    scanf("%f", &radio);
+
+    superficie = calcularSupCirculo(radio);
+
+    printf("La superficie del circulo es: %.2f\n\n", superficie);
+
+    return 0;
+}
+
+float calcularSupCirculo(float r)
+{
+    float superficie;
+
+    superficie = 3.14159 * r * r;
+
+    return superficie;
+}
