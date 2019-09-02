@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "hola.h"
+//void changeX(); //Modifica la variable x de la funcion int main
+
+int main()
+{
+    int x;
+
+    changeX(&x);
+
+    printf("%d", x);
+
+    return 0;
+}
+
+void changeX(int* puntero)
+{
+    int num;
+
+    printf("Ingrese un numero: ");
+    fflush(stdin);
+    scanf("%d", &num);
+
+    *puntero = num;
+}
+
