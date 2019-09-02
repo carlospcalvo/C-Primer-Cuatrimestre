@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int getIntRange(int*, char*, char*, int min, int max, int intentos, int returnError);
+
+int main()
+{
+    int numero;
+    int todoOk;
+
+    todoOk = getIntRange(&numero, "Ingrese edad: ", "Error. Ingrese edad: ", 18, 65, 3, -1);  //ejemplo: edades empleados
+
+    if (todoOk == 0){
+
+        printf("\nEdad no valida");
+
+    }
+    else{
+
+        printf("La edad ingresada es %d", numero);
+
+    }
+    return 0;
+}
+
+int getIntRange(int* num, char* mensaje, char* mensajeError, int min, int max, int intentos, int returnError)
+{
+
+    int auxiliar;
+    int todoOk = 0;
+
+    printf("%s", mensaje);
+
+    fflush(stdin);
+
+    scanf("%d", &auxiliar);
+
+    intentos--;
+
+    while(!(auxiliar >= min && auxiliar <= max)){
+        intentos--;
+        printf("%s", mensajeError);
+        fflush(stdin);
+        scanf("%d", &auxiliar);
+
+        if (intentos == 0){
+
+            break;
+
+        }
+
+    }
+
+    if (intentos != 0){
+
+        *num = auxiliar;
+        todoOk = 1;
+
+    }
+    return todoOk;
+
+}
