@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//void mostrarVectorChar(char* vec, int tam);
+
+void mostrarVectorChar(char vec[], int tam);
+
+int main()
+{
+  char sexos[5];
+  int varones = 0;
+  int mujeres = 0;
+
+    for(int i = 0; i < 5; ++i)
+    {
+        printf("Ingrese el sexo: \n");
+        fflush(stdin);
+        scanf("%c", &sexos[i]);
+
+        while(sexos[i] != 'f' && sexos[i] != 'm')
+        {
+            printf("Error. Reingrese: ");
+            fflush(stdin);
+            scanf("%c", &sexos[i]);
+        }
+
+
+    }
+
+    for(int i = 0; i < 5; ++i)
+    {
+         if (sexos[i] == 'm' )
+        {
+            varones++;
+        }
+        else
+        {
+            mujeres++;
+        }
+
+    }
+
+/*    for(int i = 0; i < 5; ++i)
+        {
+         printf("Sexos: %c\n", sexos[i]);
+        }
+*/
+    mostrarVectorChar(sexos, 5);
+
+    printf("\nCantidad de varones: %d", varones);
+    printf("\nCantidad de mujeres: %d", mujeres);
+
+  return 0;
+}
+
+void mostrarVectorChar(char vec[], int tam)
+{
+    for(int i; i < tam; i++)
+    {
+        printf("%c ", vec[i]);
+    }
+}
