@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+  /*  char nombre[10];
+    char auxStr[100];
+
+    printf("Ingrese nombre: ");
+    gets(auxStr);
+
+    while(strlen(auxStr) > 9){                  //el index 10 del vector nombre es para el /0
+        printf("Error. Nombre demasiado largo, reingrese: ");
+        gets(auxStr);
+    }
+    strcpy(nombre, auxStr);
+    */
+  //  strncpy(nombre,auxStr, 9); //copia solo la cantidad de caracteres determinada en la funcion
+
+  //  printf("%s\n", nombre);
+
+    char n1[10] = "juan";
+    char n2[10] = "JUAN";
+    char n3[10] = "alberto";
+    int x;
+
+   // x = strcmp(n1,n2); //compara strings, devuelve 0 si es =, -1 si la primera esta antes en ASCII, 1 si esta despues
+   // x = stricmp(n1,n2); //idem strcmp, no es case sensitive
+   // n3 = strcat(n1,n2); //concatena
+   // strupr(n1); //pasa a upper case
+   // strlwr(n2); //pasa a lower case
+    n3[0] = toupper(n3[0]);
+
+    printf("%s\n", n3);
+
+
+    return 0;
+}
