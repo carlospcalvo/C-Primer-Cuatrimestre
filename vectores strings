@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int main()
+{
+    char nombre[20];
+    char apellido[20];
+    char nombreCompleto[42];
+    char auxStr[100];
+
+
+    printf("Ingrese nombre: ");
+    gets(auxStr);
+
+    while(strlen(auxStr) > 19){
+        printf("Error: Nombre demasiado largo, reingrese: ");
+        gets(auxStr);
+    }
+    strcpy(nombre,auxStr);
+    strlwr(nombre);
+    nombre[0] = toupper(nombre[0]);
+
+
+    printf("Ingrese apellido: ");
+    gets(auxStr);
+
+    while(strlen(auxStr) > 19){
+        printf("Error: Apellido demasiado largo, reingrese: ");
+        gets(auxStr);
+    }
+    strcpy(apellido,auxStr);
+    strlwr(apellido);
+    apellido[0] = toupper(apellido[0]);
+
+
+    strcpy(nombreCompleto, apellido);
+    strcat(nombreCompleto, ", ");
+    strcat(nombreCompleto, nombre);
+    printf(nombreCompleto);
+
+    return 0;
+}
