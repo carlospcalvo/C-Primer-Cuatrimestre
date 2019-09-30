@@ -1,0 +1,424 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+
+#define LENGTH 10
+#define STRLENGTH 51
+
+
+typedef struct
+{
+    int id;
+    char name[STRLENGTH];
+    char lastName[STRLENGTH];
+    float salary;
+    int sector;
+    int isEmpty;
+} Employee;
+
+int menu();
+void initEmployees(Employee vec[], int length);
+int hardcodearEmpleados(Employee vec[], int length, int cantidad);
+void printEmployee(Employee x);
+void printEmployees(Employee vec[], int length);
+int newEmployee(Employee vec[], int length, int id);
+Employee addEmployee(int id, char name[], char lastName[], float salary, int sector);
+int findFreeArray(Employee vec[], int length);
+int findEmployeeById(Employee vec[], int length, int id);
+int modifyEmployee(Employee vec[], int length);
+int removeEmployee(Employee vec[], int length);
+void sortEmployees(Employee vec[], int length);
+
+int main()
+{
+    Employee list[LENGTH];
+    char salir = 'n';
+    int id = 1;
+    initEmployees(list, LENGTH);
+    //hardcodearEmpleados(list, LENGTH, 9);
+
+    do
+    {
+        switch(menu())
+        {
+        case 1:
+            newEmployee(list, LENGTH, id);
+            break;
+        case 2:
+            modifyEmployee(list, LENGTH);
+            break;
+        case 3:
+            removeEmployee(list, LENGTH);
+            break;
+        case 4:
+            printEmployees(list, LENGTH);
+            system("pause");
+            sortEmployees(list, LENGTH);
+            printEmployees(list, LENGTH);
+            break;
+        case 5:
+            printf("Confirma salir? (y/n): ");
+            fflush(stdin);
+            salir = getche();
+            printf("\n\n");
+            break;
+        default:
+            printf("Opcion invalida. Reingrese.\n");
+        }
+        system("pause");
+    }
+    while (salir == 'n');
+
+
+    return 0;
+}
+
+int menu()
+{
+
+    int option;
+
+    system("cls");
+    printf("****** Empleados *******\n\n");
+    printf("1-Altas\n");
+    printf("2-Modificar\n");
+    printf("3-Baja\n");
+    printf("4-Informar\n");
+    printf("5-Salir\n\n");
+    printf("Ingrese opcion: ");
+    fflush(stdin);
+    scanf("%d", &option);
+
+    return option;
+}
+
+int hardcodearEmpleados(Employee vec[], int length, int cantidad)
+{
+    int cont = 0;
+
+    Employee suplentes[]=
+    {
+        { 99, "Juan", "Lopez", 15000, 2, 0},
+        { 1, "Alberto", "Fernandez", 8400, 1, 0},
+        { 2, "Ana", "Garcia", 21500.6, 3, 0},
+        { 3, "Luis", "Miguel", 16020.4, 2, 0},
+        { 4, "Alicia", "Keys", 30000, 3, 0},
+        { 5, "Diego", "Maradona", 9642.8, 1, 0},
+        { 6, "Sofia", "Reyes", 17980, 2, 0},
+        { 7, "Clara", "Mente", 27960.6, 3, 0},
+        { 8, "Mauro", "Zarate", 14050.3, 2, 0},
+        { 9, "Daniela", "De Rossi", 35700.6, 3, 0},
+        { 10, "Agustin", "Orion", 13000, 2, 0}
+    };
+
+    if( cantidad <= 10 && length >= cantidad)
+    {
+        for(int i=0; i < cantidad; i++)
+        {
+
+            vec[i] = suplentes[i];
+            cont++;
+        }
+    }
+
+    return cont;
+}
+
+void initEmployees(Employee vec[], int length)
+{
+    for(int i = 0; i < length; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+void printEmployee(Employee x)
+{
+    printf("  %2d  %51s %51s    %8.2f    %2d\n",
+           x.id,
+           x.name,
+           x.lastName,
+           x.salary,
+           x.sector);
+}
+
+void printEmployees(Employee vec[], int length)
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf("  ID                                                Nombre                                            Apellido    Salario   Sector\n\n");
+
+    for(int i=0; i < length; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            printEmployee(vec[i]);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay empleados que mostrar\n");
+    }
+
+    printf("\n\n");
+}
+
+int newEmployee(Employee vec[], int length, int id)
+{
+    int check = -1;
+    int index;
+    char auxStr[100];
+    char name[STRLENGTH];
+    char lastName[STRLENGTH];
+    float salary;
+    int sector;
+
+    system("cls");
+
+    printf("*****Alta Empleado*****\n\n");
+
+    index = findFreeArray(vec, length);
+    id = index + id;
+
+    if( index == -1)
+    {
+        printf("\nSistema completo\n\n");
+    }
+    else
+    {
+        printf("Ingrese nombre: ");
+        fflush(stdin);
+        gets(auxStr);
+        while(strlen(auxStr) > STRLENGTH)
+        {
+            printf("Error. Nombre demasiado largo, reingrese: ");
+            gets(auxStr);
+        }
+        strcpy(name, auxStr);
+
+        printf("Ingrese apellido: ");
+        fflush(stdin);
+        gets(auxStr);
+        while(strlen(auxStr) > STRLENGTH)
+        {
+            printf("Error. Apellido demasiado largo, reingrese: ");
+            gets(auxStr);
+        }
+        strcpy(lastName, auxStr);
+
+        printf("Ingrese salario: ");
+        fflush(stdin);
+        scanf("%f", &salary);
+        while(salary < 1)
+        {
+            printf("Error. Reingrese: ");
+            fflush(stdin);
+            scanf("%f", &salary);
+        }
+
+        printf("Ingrese sector: ");
+        fflush(stdin);
+        scanf("%d", &sector);
+
+        vec[index] = addEmployee(id, name, lastName, salary, sector);
+        check = 0;
+        printf("Alta exitosa!\n\n");
+    }
+
+    return check;
+}
+
+Employee addEmployee(int id, char name[], char lastName[], float salary, int sector)
+{
+
+    Employee empleado;
+    empleado.id = id;
+    strcpy( empleado.name, name);
+    strcpy( empleado.lastName, lastName);
+    empleado.salary = salary;
+    empleado.sector = sector;
+    empleado.isEmpty = 0;
+
+    return empleado;
+}
+
+int findFreeArray(Employee vec[], int length)
+{
+    int index = -1;
+
+    for(int i=0; i < length; i++)
+    {
+        if( vec[i].isEmpty == 1 )
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+int findEmployeeById(Employee vec[], int length, int id)
+{
+
+    int index = -1;
+    for(int i=0; i < length; i++)
+    {
+        if( vec[i].id == id )
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+int modifyEmployee(Employee vec[], int length)
+{
+
+    int check = 0;
+    int id;
+    int index;
+    char auxStr[100];
+
+    system("cls");
+    printf("***** Modificar empleado *****\n\n");
+    printf("Ingrese id: ");
+    scanf("%d", &id);
+    int option;
+
+    index = findEmployeeById(vec, length, id);
+    printf("\n\n  ID                                                Nombre                                            Apellido    Salario   Sector\n\n");
+
+    if( index == -1)
+    {
+        printf("No existe un empleado con ese id.\n\n");
+
+    }
+    else
+    {
+        printEmployee(vec[index]);
+        printf("\n\n");
+        printf("1- Modificar nombre\n");
+        printf("2- Modificar apellido\n");
+        printf("3- Modificar salario\n");
+        printf("4- Modificar sector\n");
+        printf("5- Salir\n\n");
+        printf("Ingrese opcion: ");
+        scanf("%d", &option);
+        switch(option)
+        {
+        case 1:
+            printf("Ingrese nuevo nombre: ");
+            fflush(stdin);
+            gets(auxStr);
+            while(strlen(auxStr) > STRLENGTH)
+            {
+                printf("Error. Nombre demasiado largo, reingrese: ");
+                gets(auxStr);
+            }
+            strcpy(vec[index].name, auxStr);
+            break;
+
+        case 2:
+            printf("Ingrese nuevo apellido: ");
+            fflush(stdin);
+            gets(auxStr);
+            while(strlen(auxStr) > STRLENGTH)
+            {
+                printf("Error. Apellido demasiado largo, reingrese: ");
+                gets(auxStr);
+            }
+            strcpy(vec[index].lastName, auxStr);
+            break;
+        case 3:
+            printf("Ingrese nuevo salario: ");
+            fflush(stdin);
+            scanf("%f", &vec[index].salary);
+            break;
+        case 4:
+            printf("Ingrese nuevo sector: ");
+            scanf("%d", &vec[index].sector);
+            break;
+        case 5:
+            printf("Se ha cancelado la modificacion.\n");
+            break;
+        default:
+            printf("Opcion invalida.\n");
+        }
+    }
+    return check;
+}
+
+int removeEmployee(Employee vec[], int length)
+{
+    int check = 0;
+    int id;
+    int index;
+    char confirm;
+    system("cls");
+    printf("***** Baja Empleado *****\n\n");
+    printf("Ingrese id: ");
+    scanf("%d", &id);
+
+    index = findEmployeeById(vec, length, id);
+
+    if( index == -1)
+    {
+        printf("No existe un empleado con ese id\n\n");
+
+    }
+    else
+    {
+        printEmployee(vec[index]);
+
+        printf("\nConfirma baja? (y/n): ");
+        fflush(stdin);
+        scanf("%c", &confirm);
+
+        if( confirm == 'y')
+        {
+            vec[index].isEmpty = 1;
+            check = 1;
+            printf("Baja exitosa!\n");
+        }
+        else
+        {
+            printf("Se ha cancelado la baja.");
+        }
+    }
+
+    return check;
+}
+
+void sortEmployees(Employee vec[], int length)
+{
+    Employee auxEmployee;
+
+    for(int i= 0; i < length-1 ; i++)
+    {
+        for(int j= i+1; j < length; j++)
+        {
+            if(strcmp(vec[i].lastName, vec[j].lastName) > 0)
+            {
+                auxEmployee = vec[i];
+                vec[i] = vec[j];
+                vec[j] = auxEmployee;
+            }
+            else if (strcmp(vec[i].lastName, vec[j].lastName) == 0)
+            {
+                if(vec[i].sector > vec[j].sector)
+                {
+                    auxEmployee = vec[i];
+                    vec[i] = vec[j];
+                    vec[j] = auxEmployee;
+                }
+
+            }
+        }
+    }
+}
