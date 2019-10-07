@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//Estructura punto 3
+typedef struct
+{
+    int id;
+    char procesador[20];
+    char marca[20];
+    float precio;
+}Notebook;
+
+//Prototipo funcion punto 1
+float aplicarDescuento(float precio);
+//Prototipo funcion punto 2
+int contarCaracteres(char vec[10], char x);
+//Prototipo funcion punto 3
+void hardcodearNotebooks(Notebook vec[5]);
+void ordenarCatalogo(Notebook vec[5]);
+void mostrarNotebook(Notebook x);
+void mostrarCatalogo(Notebook vec[5]);
+
+int main()
+{
+    //Variables punto 1
+    float precio = 100;
+    float precioFinal;
+    //Variables punto 2
+    char caracteres[10] = {'h', 'o', 'l', 'a', 'm', 'u', 'n', 'd', 'o'};
+    char caracter = 'o';
+    int repeticionesDeCaracter;
+    //Variables punto 3
+    Notebook catalogo[5]; //= {{1000, 'AMD', 'Dell', 12000}}//, {1001,'AMD','Lenovo', 16400}, {1002,'Intel','Dell', 20580.30}, {1003,'AMD','HP', 19500.5}, {1004,'Intel','HP', 18499.9}};
+
+    //Llamada a funciones punto 1
+    precioFinal = aplicarDescuento(precio);
+    printf("Precio original: %2f \n", precio);
+    printf("Precio final: %2f \n\n", precioFinal);
+
+    //Llamada a funciones punto 2
+    repeticionesDeCaracter = contarCaracteres(caracteres, caracter);
+    printf("El caracter '%c' se repite %d veces.\n\n", caracter, repeticionesDeCaracter);
+
+    //Llamada a funciones punto 3
+    hardcodearNotebooks(catalogo);
+    mostrarCatalogo(catalogo);
+    ordenarCatalogo(catalogo);
+    mostrarCatalogo(catalogo);
+    return 0;
+}
+//Funcion punto 1
+float aplicarDescuento(float precio)
+{
+    float precioConDescuento;
+
+    precioConDescuento = (float) precio - (precio * 0.05);
+
+    return precioConDescuento;
+}
+//Funcion punto 2
+int contarCaracteres(char vec[10], char x)
+{
+    int contador = 0;
+
+    for(int i = 0; i < 10; i++)
+    {
+        if(vec[i] == x)
+        {
+            contador++;
+        }
+    }
+    return contador;
+}
+//Funcion punto 3
+
+/*
+Dada la estructura Notebook(id, procesador, marca, precio)
+generar una función que permita
+ordenar un array de dicha estructura por marca.
+Ante igualdad de marca deberá ordenarse por precio.
+Hardcodear datos y mostrarlos desde el main.
+*/
+void ordenarCatalogo(Notebook vec[5])
+{
+    Notebook aux;
+
+    for(int i = 0; i < 5; i++)
+    {
+        for(int j = i+1; j < 5; j++)
+        {
+            if (vec[i].marca > vec[j].marca)
+            {
+                aux = vec[i];
+                vec[i] = vec[j];
+                vec[j] = aux;
+            }
+            else if (vec[i].marca == vec[j].marca)
+            {
+                if(vec[i].precio > vec[j].precio)
+                {
+                    aux = vec[i];
+                    vec[i] = vec[j];
+                    vec[j] = vec[i];
+                }
+            }
+        }
+    }
+}
+
+void mostrarNotebook(Notebook x)
+{
+    printf("%d   %10s   %10s  %8.2f\n", x.id, x.procesador, x.marca, x.precio);
+}
+
+void mostrarCatalogo(Notebook vec[5])
+{
+    printf("ID   Procesador    Marca    Precio\n\n");
+    for(int i = 0; i < 5; i++)
+    {
+        mostrarNotebook(vec[i]);
+    }
+}
+
+void hardcodearNotebooks(Notebook vec[5])
+{
+    vec[0].id = 1000;
+    strcpy(vec[0].procesador, "AMD");
+    strcpy(vec[0].marca, "HP");
+    vec[0].precio = 16000.4;
+
+    vec[1].id = 1001;
+    strcpy(vec[0].procesador, "AMD");
+    strcpy(vec[0].marca, "Dell");
+    vec[1].precio = 22500;
+
+    vec[2].id = 1002;
+    strcpy(vec[0].procesador, "Intel");
+    strcpy(vec[0].marca, "Lenovo");
+    vec[2].precio = 21000;
+
+    vec[3].id = 1003;
+    strcpy(vec[0].procesador, "AMD");
+    strcpy(vec[0].marca, "Lenovo");
+    vec[3].precio = 19500.5;
+
+    vec[4].id = 1004;
+    strcpy(vec[0].procesador, "Intel");
+    strcpy(vec[0].marca, "HP");
+    vec[4].precio = 18400.6;
+}
