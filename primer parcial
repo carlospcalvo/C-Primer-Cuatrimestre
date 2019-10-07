@@ -149,3 +149,12 @@ void hardcodearNotebooks(Notebook vec[5])
     strcpy(vec[0].marca, "HP");
     vec[4].precio = 18400.6;
 }
+
+//PUNTO 2
+
+/*
+Crear una función que se llame contarCaracteres
+que reciba una cadena de caracteres como primer parámetro
+y un carácter como segundo y devuelva
+la cantidad de veces que ese carácter aparece en la cadena
+*/
