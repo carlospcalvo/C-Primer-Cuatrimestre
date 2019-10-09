@@ -1,0 +1,765 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+
+#define TAM 5
+#define TAMS 21
+#define TAMSERV 25
+#define TAML 4
+
+typedef struct{
+    int dia;
+    int mes;
+    int anio;
+}eFecha;
+
+typedef struct{
+    int id;
+    char descripcion[TAMS];
+    int isEmpty;
+}eMarca;
+
+typedef struct{
+    int id;
+    char nombreColor[TAMS];
+    int isEmpty;
+}eColor;
+
+typedef struct{
+    int id;
+    int patente;
+    int idMarca;
+    int idColor;
+    int modelo;
+    int isEmpty;
+}eAuto;
+
+typedef struct{
+    int id;
+    char descripcion[TAMSERV];
+    int precio;
+    int isEmpty;
+}eServicio;
+
+typedef struct{
+    int id;
+    int patente;
+    int idServicio;
+    eFecha fecha;
+    int isEmpty;
+}eTrabajo;
+
+int menu();
+int altaAuto(eAuto vec[], int tam, int id, eMarca marcas[], int tamM, eColor color[], int tamC);
+void inicializarAutos(eAuto vec[], int tam);
+void inicializarColores(eColor vec[], int tam);
+void inicializarMarcas(eMarca vec[], int tam);
+void inicializarTrabajos(eTrabajo vec[], int tam);
+void inicializarServicios(eServicio vec[], int tam);
+int buscarLibre(eAuto vec[], int tam);
+void mostrarAuto(eAuto x, eColor vec[], int tamC, eMarca marcas[], int tamM);
+void mostrarAutos(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM);
+void mostrarMarca(eMarca x);
+void mostrarMarcas(eMarca vec[], int tam);
+void mostrarColor(eColor x);
+void mostrarColores(eColor vec[], int tam);
+void mostrarServicio(eServicio x);
+void mostrarServicios(eServicio vec[], int tam);
+eAuto newAuto(int id, int patente, int idMarca, int idColor, int modelo);
+int hardcodearMarcas( eMarca vec[], int tam, int cantidad);
+int hardcodearColores( eColor vec[], int tam, int cantidad);
+int hardcodearLavados( eServicio vec[], int tam, int cantidad);
+int buscarAuto(int patente, eAuto vec[], int tam);
+int modificarAuto(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM);
+int bajaAuto(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM);
+int altaTrabajo(eTrabajo array[], int tamT, eAuto vec[], int tam, int idTrabajo, eServicio servicio[], int tamS);
+eTrabajo newTrabajo(int idTrabajo, int patente, int idServicio, eFecha fecha);
+void mostrarTrabajos(eTrabajo vec[], int tam, eServicio servicio[], int tamS);
+
+int main()
+{
+    eAuto coches[TAM];
+    eMarca marcas[TAM];
+    eColor colores[TAM];
+    eServicio lavados[TAML];
+    eTrabajo trabajos[TAM];
+    char salir = 'n';
+    int id = 1;
+    int idTrabajo = 1;
+
+    inicializarAutos(coches, TAM);
+    inicializarColores(colores, TAM);
+    inicializarMarcas(marcas, TAM);
+    inicializarServicios(lavados, TAML);
+    inicializarTrabajos(trabajos, TAM);
+
+    hardcodearColores(colores, TAM, 5);
+    hardcodearLavados(lavados, TAML, 4);
+    hardcodearMarcas(marcas, TAM, 5);
+
+    do{
+        switch(menu()){
+            case 1:
+                id = id + altaAuto(coches, TAM, id, marcas, TAM, colores, TAM);
+                system("pause");
+                break;
+            case 2:
+                modificarAuto(coches, TAM, colores, TAM, marcas, TAM);
+                system("pause");
+                break;
+            case 3:
+                bajaAuto(coches, TAM, colores, TAM, marcas, TAM);
+                system("pause");
+                break;
+            case 4:
+                mostrarAutos(coches, TAM, colores, TAM, marcas, TAM);
+                break;
+            case 5:
+                mostrarMarcas(marcas, TAM);
+                system("pause");
+                break;
+            case 6:
+                mostrarColores(colores, TAM);
+                system("pause");
+                break;
+            case 7:
+                mostrarServicios(lavados, TAML);
+                system("pause");
+                break;
+            case 8:
+                idTrabajo = idTrabajo + altaTrabajo(trabajos, TAM, coches, TAM, idTrabajo, lavados, TAML);
+                break;
+            case 9:
+                mostrarTrabajos(trabajos, TAM, lavados, TAML);
+                break;
+            case 10:
+                printf("Confirma salir? (s/n): ");
+                salir = getche();
+                while(!(salir == 's' || salir == 'n'))
+                {
+                    printf("Opcion incorrecta. Reingrese (s/n): ");
+                    salir = getche();
+                }
+                break;
+            default:
+                printf("Opcion incorrecta. Reingrese: ");
+        }
+
+
+    }while(salir == 'n');
+
+    return 0;
+}
+
+int menu(){
+    int opcion = 0;
+
+    system("cls");
+    printf("****Menu de opciones****\n\n");
+    printf("1-Alta Auto\n");
+    printf("2-Modificar Auto\n");
+    printf("3-Baja Auto\n");
+    printf("4-Listar Autos\n");
+    printf("5-Listar Marcas\n");
+    printf("6-Listar Colores\n");
+    printf("7-Listar Servicios\n");
+    printf("8-Alta Trabajo\n");
+    printf("9-Listar trabajos\n");
+    printf("10-Salir\n\n");
+    scanf("%d", &opcion);
+    return opcion;
+}
+
+int altaAuto(eAuto vec[], int tam, int id, eMarca marcas[], int tamM, eColor color[], int tamC){
+    int todoOk = 0;
+    int indice;
+    int patente;
+    int idMarca;
+    int idColor;
+    int modelo;
+
+    system("cls");
+
+    printf("*****Alta Auto*****\n\n");
+
+    indice = buscarLibre(vec, tam);
+
+    if( indice == -1)
+    {
+        printf("\nSistema completo\n\n");
+    }
+    else
+    {
+        printf("Ingrese patente: ");
+        fflush(stdin);
+        scanf("%d", &patente);
+
+        mostrarMarcas(marcas, tamM);
+        printf("Ingrese id de marca: ");
+        fflush(stdin);
+        scanf("%d", &idMarca);
+        while(!(idMarca > 999 && idMarca < 1005)){
+            printf("Codigo de marca no valido, reingrese: ");
+            fflush(stdin);
+            scanf("%d", &idMarca);
+        }
+
+        mostrarColores(color, tamC);
+        printf("Ingrese color: ");
+        fflush(stdin);
+        scanf("%d", &idColor);
+        while(!(idColor > 4999 && idColor < 5005)){
+            printf("Codigo de color no valido, reingrese: ");
+            fflush(stdin);
+            scanf("%d", &idColor);
+        }
+
+        printf("Ingrese modelo (anio): ");
+        fflush(stdin);
+        scanf("%d", &modelo);
+        while(!(modelo < 2019 && modelo > 1900)){
+            printf("Error. Reingrese modelo: ");
+            fflush(stdin);
+            scanf("%d", &modelo);
+        }
+
+        vec[indice] = newAuto(id, patente, idMarca, idColor, modelo);
+        todoOk = 1;
+        printf("Alta exitosa!!\n\n");
+    }
+
+    return todoOk;
+
+
+}
+
+eAuto newAuto(int id, int patente, int idMarca, int idColor, int modelo)
+{
+    eAuto carro;
+    carro.id = id;
+    carro.patente = patente;
+    carro.idMarca = idMarca;
+    carro.idColor = idColor;
+    carro.modelo = modelo;
+    carro.isEmpty = 0;
+
+    return carro;
+}
+
+void inicializarAutos(eAuto vec[], int tam)
+ {
+    for(int i = 0; i < tam; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+void inicializarColores(eColor vec[], int tam)
+{
+    for(int i = 0; i < tam; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+void inicializarMarcas(eMarca vec[], int tam)
+{
+    for(int i = 0; i < tam; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+void inicializarServicios(eServicio vec[], int tam)
+{
+    for(int i = 0; i < tam; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+void inicializarTrabajos(eTrabajo vec[], int tam) //CAMBIARL EL FLAG isEmpty
+{
+    for(int i = 0; i < tam; i++)
+    {
+        vec[i].isEmpty = 1;
+    }
+}
+
+int buscarLibre(eAuto vec[], int tam) //BUSCAR INDICE LIBRE EN UN ARRAY
+{
+    int indice = -1;
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 1 )
+        {
+            indice = i;
+            break;
+        }
+    }
+    return indice;
+}
+
+void mostrarAuto(eAuto x, eColor colores[], int tamC, eMarca marcas[], int tamM){
+    char descripcionColor[21];
+    char descripcionMarca[21];
+
+    for(int i=0; i < tamC; i++)
+    {
+        if( colores[i].id == x.idColor && colores[i].isEmpty == 0)
+        {
+            strcpy(descripcionColor, colores[i].nombreColor);
+            break;
+        }
+    }
+
+    for(int j=0; j < tamM; j++)
+    {
+        if( marcas[j].id == x.idMarca && marcas[j].isEmpty == 0)
+        {
+            strcpy(descripcionMarca, marcas[j].descripcion);
+            break;
+        }
+    }
+    printf("  %d  %8d   %10s    %10s    %4d\n",
+           x.id,
+           x.patente,
+           descripcionMarca,
+           descripcionColor,
+           x.modelo);
+}
+
+void mostrarAutos(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM)
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf(" ID    Patente      Marca          Color   Modelo\n\n");
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            mostrarAuto(vec[i],colores,tamC,marcas,tamM);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay autos que mostrar\n");
+    }
+
+    system("pause");
+    printf("\n\n");
+}
+
+void mostrarMarca(eMarca x) //PRNTEAR UN ELEMENTO DEL ARRAY
+{
+    printf("  %d  %20s\n", x.id, x.descripcion);
+}
+
+void mostrarMarcas(eMarca vec[], int tam) //PRINTEAR TODO EL ARRAY
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf(" ID  Descripcion \n\n");
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            mostrarMarca(vec[i]);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay marcas que mostrar\n");
+    }
+
+    printf("\n\n");
+}
+
+void mostrarColor(eColor x) //PRNTEAR UN ELEMENTO DEL ARRAY
+{
+    printf("  %d  %20s\n", x.id, x.nombreColor);
+}
+
+void mostrarColores(eColor vec[], int tam) //PRINTEAR TODO EL ARRAY
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf(" ID  Descripcion \n\n");
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            mostrarColor(vec[i]);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay colores que mostrar\n");
+    }
+
+    printf("\n\n");
+}
+
+void mostrarServicio(eServicio x) //PRNTEAR UN ELEMENTO DEL ARRAY
+{
+    printf("  %d  %10s   %8d\n", x.id, x.descripcion, x.precio);
+}
+
+void mostrarServicios(eServicio vec[], int tam)
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf("   ID    Descripcion     Precio \n\n");
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            mostrarServicio(vec[i]);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay servicios que mostrar\n");
+    }
+
+    printf("\n\n");
+}
+
+int hardcodearMarcas( eMarca vec[], int tam, int cantidad) //HARDCODEAR DATOS
+{
+    int cont = 0;
+
+    eMarca suplentes[]=
+    {
+        { 1000, "RENAULT"},
+        { 1001, "FIAT"},
+        { 1002, "FORD"},
+        { 1003, "CHEVROLET"},
+        { 1004, "PEUGEOT"}
+    };
+
+    if( cantidad <= 5 && tam >= cantidad)
+    {
+        for(int i=0; i < cantidad; i++)
+        {
+
+            vec[i] = suplentes[i];
+            cont++;
+        }
+    }
+
+    return cont;
+}
+
+int hardcodearColores( eColor vec[], int tam, int cantidad) //HARDCODEAR DATOS
+{
+    int cont = 0;
+
+    eColor suplentes[]=
+    {
+        { 5000, "NEGRO"},
+        { 5001, "BLANCO"},
+        { 5002, "GRIS"},
+        { 5003, "ROJO"},
+        { 5004, "AZUL"}
+    };
+
+    if( cantidad <= 5 && tam >= cantidad)
+    {
+        for(int i=0; i < cantidad; i++)
+        {
+
+            vec[i] = suplentes[i];
+            cont++;
+        }
+    }
+
+    return cont;
+}
+
+int hardcodearLavados( eServicio vec[], int tam, int cantidad) //HARDCODEAR DATOS
+{
+    int cont = 0;
+
+    eServicio suplentes[]=
+    {
+        { 20000, "Lavado", 250},
+        { 20001, "Pulido", 300},
+        { 20002, "Encerado", 400},
+        { 20003, "Completo", 600}
+    };
+
+    if( cantidad <= 4 && tam >= cantidad)
+    {
+        for(int i=0; i < cantidad; i++)
+        {
+
+            vec[i] = suplentes[i];
+            cont++;
+        }
+    }
+
+    return cont;
+}
+
+int modificarAuto(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM)
+{
+    int todoOk = 0;
+    int patente;
+    int indice;
+    system("cls");
+    printf("***** Modificar Auto *****\n\n");
+    printf("Ingrese patente: ");
+    scanf("%d", &patente);
+    int opcion;
+
+    indice = buscarAuto(patente, vec, tam);
+
+    if( indice == -1)
+    {
+        printf("No existe un auto con esa patente\n\n");
+
+    }
+    else
+    {
+
+        mostrarAuto(vec[indice], colores, tamC, marcas, tamM);
+
+        printf("1- Modificar color\n");
+        printf("2- Modificar modelo\n");
+        printf("3- Salir\n\n");
+        printf("Ingrese opcion: ");
+        scanf("%d", &opcion);
+        switch(opcion)
+        {
+        case 1:
+            mostrarColores(colores, tamC);
+            printf("Ingrese nuevo color: ");
+            scanf("%d", &vec[indice].idColor);
+            while(!(vec[indice].idColor > 4999 && vec[indice].idColor < 5005))
+            {
+                printf("Codigo de color no valido, reingrese: ");
+                fflush(stdin);
+                scanf("%d", &vec[indice].idColor);
+            }
+            break;
+
+        case 2:
+            printf("Ingrese nuevo modelo: ");
+            scanf("%d", &vec[indice].modelo);
+            while(!(vec[indice].modelo < 2019 && vec[indice].modelo > 1900))
+            {
+                printf("Error. Reingrese modelo: ");
+                fflush(stdin);
+                scanf("%d", &vec[indice].modelo);
+            }
+            break;
+        case 3:
+            printf("Se ha cancelado la modificacion.\n\n");
+            break;
+
+        }
+    }
+    return todoOk;
+}
+
+int buscarAuto(int patente, eAuto vec[], int tam) //ENCONTRAR INDICE POR ID
+{
+    int indice = -1;
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].patente == patente && vec[i].isEmpty == 0)
+        {
+            indice = i;
+            break;
+        }
+    }
+    return indice;
+}
+
+int bajaAuto(eAuto vec[], int tam, eColor colores[], int tamC, eMarca marcas[], int tamM)
+{
+    int todoOk = 0;
+    int patente;
+    int indice;
+    char confirma;
+    system("cls");
+    printf("***** Baja Auto *****\n\n");
+    printf("Ingrese patente: ");
+    scanf("%d", &patente);
+
+    indice = buscarAuto(patente, vec, tam);
+
+    if( indice == -1)
+    {
+        printf("No existe un auto con esa patente\n\n");
+
+    }
+    else
+    {
+        mostrarAuto(vec[indice], colores, tamC, marcas, tamM);
+
+        printf("\nConfirma baja? (s/n)");
+        fflush(stdin);
+        scanf("%c", &confirma);
+
+        if( confirma == 's')
+        {
+            vec[indice].isEmpty = 1;
+            todoOk = 1;
+            printf("Baja exitosa.\n\n");
+        }
+        else
+        {
+            printf("Se ha cancelado la operacion.\n\n");
+        }
+    }
+
+    return todoOk;
+}
+
+int altaTrabajo(eTrabajo array[], int tamT, eAuto vec[], int tam, int idTrabajo, eServicio servicio[], int tamS){
+    int todoOk = 0;
+    int coche;
+    int patente;
+    int indice;
+    int idServicio;
+    eFecha fecha;
+
+    system("cls");
+
+    printf("*****Alta Trabajo*****\n\n");
+
+    printf("Ingrese patente: ");
+    fflush(stdin);
+    scanf("%d", &patente);
+
+    coche = buscarAuto(patente, vec, tam);
+
+    if( coche == -1)
+    {
+        printf("No existe un auto con esa patente\n\n");
+
+    }
+    else
+    {
+        indice = buscarLibre(vec, tam);
+
+        if( indice == -1)
+        {
+            printf("\nSistema completo\n\n");
+        }
+        else
+        {
+            mostrarServicios(servicio, tamS);
+            printf("Ingrese id de servicio: ");
+            fflush(stdin);
+            scanf("%d", &idServicio);
+            while(!(idServicio > 19999 && idServicio < 20005))
+            {
+                printf("Codigo de servicio no valido, reingrese: ");
+                fflush(stdin);
+                scanf("%d", &idServicio);
+            }
+
+            printf("Ingrese fecha del trabajo: ");
+            scanf("%d/%d/%d", &fecha.dia, &fecha.mes, &fecha.anio);
+            while(!(fecha.mes > 1 && fecha.mes < 13) && (!(fecha.anio > 2018 && fecha.anio < 2025)) && (!(fecha.dia > 0 && fecha.dia < 32))){
+                printf("Error. Reingrese fecha: ");
+                scanf("%d/%d/%d", &fecha.dia, &fecha.mes, &fecha.anio);
+            }
+
+        }
+    }
+    array[indice] = newTrabajo(idTrabajo, patente, idServicio, fecha);
+    todoOk = 1;
+    printf("Alta exitosa.\n\n");
+
+
+    return todoOk;
+
+
+}
+
+eTrabajo newTrabajo(int idTrabajo, int patente, int idServicio, eFecha fecha)
+{
+    eTrabajo lavado;
+    lavado.id = idTrabajo;
+    lavado.patente = patente;
+    lavado.idServicio = idServicio;
+    lavado.fecha = fecha;
+    lavado.isEmpty = 0;
+
+    return lavado;
+}
+
+void mostrarTrabajo(eTrabajo x, eServicio servicio[], int tamS){
+
+    char descripcionServ[21];
+
+    for(int i=0; i < tamS; i++)
+    {
+        if( servicio[i].id == x.idServicio && servicio[i].isEmpty == 0)
+        {
+            strcpy(descripcionServ, servicio[i].descripcion);
+            break;
+        }
+    }
+
+    printf("  %d  %8d   %10s %02d/%02d/%d \n",
+           x.id,
+           x.patente,
+           descripcionServ,
+           x.fecha.dia,
+           x.fecha.mes,
+           x.fecha.anio);
+}
+
+void mostrarTrabajos(eTrabajo vec[], int tam, eServicio servicio[], int tamS)
+{
+
+    int flag = 0;
+    system("cls");
+
+    printf(" ID    Patente      Servicio      Fecha\n\n");
+
+    for(int i=0; i < tam; i++)
+    {
+        if( vec[i].isEmpty == 0)
+        {
+            mostrarTrabajo(vec[i], servicio, tamS);
+            flag = 1;
+        }
+    }
+
+    if( flag == 0)
+    {
+        printf("\nNo hay trabajos que mostrar\n");
+    }
+
+    system("pause");
+    printf("\n\n");
+}
