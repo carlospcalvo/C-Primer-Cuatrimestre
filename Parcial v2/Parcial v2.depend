@@ -1,0 +1,58 @@
+# depslib dependency file v1.0
+1571197805 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\auto.c
+	"Auto.h"
+
+1571193948 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\auto.h
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	"Marca.h"
+	"Color.h"
+	"Validaciones.h"
+
+1571193948 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\marca.h
+
+1571193948 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\color.h
+
+1571194349 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\validaciones.h
+
+1571197873 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\color.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	"Color.h"
+
+1571196760 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\marca.c
+	"Marca.h"
+
+1571196761 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\main.c
+	"Marca.h"
+	"Color.h"
+	"Auto.h"
+	"Servicio.h"
+	"Trabajo.h"
+	"Validaciones.h"
+
+1571197792 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\servicio.h
+
+1571194315 c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\trabajo.h
+	"Auto.h"
+	"Servicio.h"
+	"Validaciones.h"
+
+1571196987 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\servicio.c
+	"Servicio.h"
+
+1571197450 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\trabajo.c
+	"Trabajo.h"
+	"Validaciones.h"
+
+1571197775 source:c:\users\carlo\desktop\utn\tsp\programacion i\parcial v2\validaciones.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	"Validaciones.h"
+
