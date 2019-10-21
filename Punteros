@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int x , int y);
+void swapSwap(int* x , int* y);
+
+int main()
+{
+    int x = 10;
+    int y = 7;
+
+    printf("En main x: %d  y: %d\n\n", x, y);
+
+    swap(x, y);
+
+    printf("En main x: %d  y: %d\n\n", x, y);
+
+    swapSwap(&x, &y);
+
+    printf("En main x: %d  y: %d\n\n", x, y);
+
+    return 0;
+}
+
+void swap(int x , int y)
+{
+    int aux;
+
+    aux = x;
+    x = y;
+    y = aux;
+    printf("En swap  x: %d  y: %d\n\n", x, y);
+
+}
+
+void swapSwap(int* x , int* y)
+{
+    int aux;
+
+    aux = *x;
+    *x = *y;
+    *y = aux;
+    printf("En swap punteros  x: %d  y: %d\n\n", *x, *y);
+
+}
