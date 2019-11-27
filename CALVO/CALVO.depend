@@ -1,0 +1,95 @@
+# depslib dependency file v1.0
+1574862351 source:d:\diacu radoeff\calvo\cachorro.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	"Cachorro.h"
+	"LinkedList.h"
+
+1574860894 d:\diacu radoeff\calvo\cachorro.h
+
+1574857113 d:\diacu radoeff\calvo\linkedlist.h
+
+1574861536 source:d:\diacu radoeff\calvo\controller.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	"LinkedList.h"
+	"Cachorro.h"
+	"parser.h"
+
+1574858431 d:\diacu radoeff\calvo\parser.h
+
+1574862039 source:d:\diacu radoeff\calvo\linkedlist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"LinkedList.h"
+
+1574862126 source:d:\diacu radoeff\calvo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	"LinkedList.h"
+	"Cachorro.h"
+	"parser.h"
+	"Controller.h"
+
+1574861656 source:d:\diacu radoeff\calvo\parser.c
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Cachorro.h"
+
+1574857585 d:\diacu radoeff\calvo\controller.h
+
+1574866504 source:c:\users\alumno\desktop\calvo\cachorro.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	"Cachorro.h"
+	"LinkedList.h"
+
+1574866537 c:\users\alumno\desktop\calvo\cachorro.h
+
+1574865461 c:\users\alumno\desktop\calvo\linkedlist.h
+
+1574867055 source:c:\users\alumno\desktop\calvo\controller.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	"LinkedList.h"
+	"Cachorro.h"
+	"parser.h"
+
+1574858431 c:\users\alumno\desktop\calvo\parser.h
+
+1574866133 source:c:\users\alumno\desktop\calvo\linkedlist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"LinkedList.h"
+
+1574866504 source:c:\users\alumno\desktop\calvo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	"LinkedList.h"
+	"Cachorro.h"
+	"parser.h"
+	"Controller.h"
+
+1574866525 c:\users\alumno\desktop\calvo\controller.h
+
+1574863553 source:c:\users\alumno\desktop\calvo\parser.c
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Cachorro.h"
+
