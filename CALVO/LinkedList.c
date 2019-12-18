@@ -599,6 +599,20 @@ int ll_map(LinkedList* this, int (*pFunc)(void*))
     }
 
     return todoOk;
+    /********************************
+    //funcion para usar con map
+    //si la patente empezaba con numeros era una moto
+    int mapTipo(void* dominio){
+    eDominio* aux = (eDominio*) dominio;
+    if(isdigit(aux->dominio[0])){
+        setTipo(aux, 'M');
+    }else{
+        setTipo(aux, 'A');
+    }
+    return 1;
+    }
+    
+  **************************************/
 }
 
 LinkedList* ll_filter(LinkedList* this, int (*pFunc) (void*))
@@ -624,4 +638,17 @@ LinkedList* ll_filter(LinkedList* this, int (*pFunc) (void*))
 
     return auxll;
 }
+/*****************************************
+//funcion para usar con filter
 
+int dominio_isCar(void* pElement){
+//devuelve 1 si el tipo era auto
+    eDominio* aux = (eDominio*) pElement;
+    int returnAux = 0;
+
+    if(aux->tipo == 'A' && aux!=NULL){
+        returnAux = 1;
+    }
+    return returnAux;
+}
+*********************************************/
